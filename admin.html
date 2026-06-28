@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel | Desert Safari Dubai</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #d4af37;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.9rem;
+    }
+
+    .btn:hover {
+      background: #b8941f;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: #d4af37;
+      border: 1px solid #d4af37;
+    }
+
+    .btn-outline:hover {
+      background: #d4af37;
+      color: #fff;
+    }
+
+    /* Header */
+    header {
+      background: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #d4af37;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+    }
+
+    nav ul li {
+      margin-left: 2rem;
+    }
+
+    nav ul li a {
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #d4af37;
+    }
+
+    .mobile-toggle {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* Admin Login */
+    .admin-login {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                  url('https://images.unsplash.com/photo-1518684079-3c830dcef090?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center/cover;
+      color: #fff;
+    }
+
+    .login-box {
+      background: rgba(255,255,255,0.95);
+      color: #333;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login-box h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #222;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: inherit;
+    }
+
+    .form-group textarea {
+      height: 100px;
+      resize: vertical;
+    }
+
+    .file-upload {
+      border: 2px dashed #ddd;
+      border-radius: 4px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.3s;
+    }
+
+    .file-upload:hover {
+      border-color: #d4af37;
+    }
+
+    .file-upload input {
+      display: none;
+    }
+
+    .file-upload-icon {
+      font-size: 2rem;
+      color: #d4af37;
+      margin-bottom: 0.5rem;
+    }
+
+    .file-upload-text {
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .image-preview {
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .image-preview img {
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 4px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    /* Admin Dashboard */
+    .admin-dashboard {
+      padding-top: 100px;
+      min-height: 100vh;
+    }
+
+    .dashboard-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .dashboard-header h1 {
+      font-size: 2.5rem;
+      color: #222;
+      margin-bottom: 0.5rem;
+    }
+
+    .dashboard-header p {
+      color: #666;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .stat-card {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .stat-card h3 {
+      font-size: 2rem;
+      color: #d4af37;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-card p {
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .admin-section {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      margin-bottom: 2rem;
+    }
+
+    .admin-section h2 {
+      margin-bottom: 1.5rem;
+      color: #222;
+      font-size: 1.5rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table th, table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    table th {
+      background: #f5f5f5;
+      font-weight: 600;
+      color: #333;
+    }
+
+    table tr:hover {
+      background: #f9f9f9;
+    }
+
+    .action-btn {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      margin-right: 0.5rem;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      color: #222;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #999;
+    }
+
+    .close-modal:hover {
+      color: #333;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .mobile-toggle {
+        display: block;
+      }
+
+      nav ul {
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: #fff;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        display: none;
+      }
+
+      nav ul.show {
+        display: flex;
+      }
+
+      nav ul li {
+        margin: 0;
+        text-align: center;
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      table {
+        display: block;
+        overflow-x: auto;
+      }
+
+      .modal-content {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container header-inner">
+      <div class="logo">Desert Safari Dubai</div>
+      <div class="mobile-toggle">☰</div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="#admin">Admin</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Admin Login (initially visible) -->
+  <section class="admin-login" id="admin-login">
+    <div class="container">
+      <div class="login-box">
+        <h2>Admin Login</h2>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="admin-username">Username</label>
+            <input type="text" id="admin-username" required>
+          </div>
+          <div class="form-group">
+            <label for="admin-password">Password</label>
+            <input type="password" id="admin-password" required>
+          </div>
+          <button type="submit" class="btn" style="width: 100%;">Login</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Admin Dashboard (initially hidden) -->
+  <section class="admin-dashboard" id="admin-dashboard" style="display: none;">
+    <div class="container">
+      <div class="dashboard-header">
+        <h1>Admin Dashboard</h1>
+        <p>Manage bookings, packages, and view analytics for Desert Safari Dubai.</p>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>142</h3>
+          <p>Total Bookings</p>
+        </div>
+        <div class="stat-card">
+          <h3>24</h3>
+          <p>Pending Bookings</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="package-count">5</h3>
+          <p>Packages</p>
+        </div>
+        <div class="stat-card">
+          <h3>AED 42,800</h3>
+          <p>Revenue (This Month)</p>
+        </div>
+      </div>
+
+      <!-- Bookings Section -->
+      <div class="admin-section">
+        <h2>Recent Bookings</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Package</th>
+              <th>Date</th>
+              <th>Guests</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#BK001</td>
+              <td>John Smith</td>
+              <td>Evening Safari</td>
+              <td>2026-07-05</td>
+              <td>4</td>
+              <td>Confirmed</td>
+              <td>
+                <button class="btn btn-outline action-btn">Edit</button>
+                <button class="btn btn-outline action-btn">Cancel</button>
+              </td>
+            </tr>
+            <tr>
+              <td>#BK002</td>
+              <td>Emma Johnson</td>
+              <td>Morning Safari</td>
+              <td>2026-07-06</td>
+              <td>2</td>
+              <td>Pending</td>
+              <td>
+                <button class="btn btn-outline action-btn">Edit</button>
+                <button class="btn btn-outline action-btn">Cancel</button>
+              </td>
+            </tr>
+            <tr>
+              <td>#BK003</td>
+              <td>Ahmed Al Maktoum</td>
+              <td>Overnight Safari</td>
+              <td>2026-07-10</td>
+              <td>6</td>
+              <td>Confirmed</td>
+              <td>
+                <button class="btn btn-outline action-btn">Edit</button>
+                <button class="btn btn-outline action-btn">Cancel</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Packages Section -->
+      <div class="admin-section">
+        <h2>Manage Packages</h2>
+        <table id="packagesTable">
+          <thead>
+            <tr>
+              <th>Package</th>
+              <th>Price</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Evening Desert Safari</td>
+              <td>AED 150</td>
+              <td>Active</td>
+              <td>
+                <button class="btn btn-outline action-btn">Edit</button>
+                <button class="btn btn-outline action-btn">Deactivate</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Morning Desert Safari</td>
+              <td>AED 120</td>
+              <td>Active</td>
+              <td>
+                <button class="btn btn-outline action-btn">Edit</button>
+                <button class="btn btn-outline action-btn">Deactivate</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Overnight Desert Safari</td>
+              <td>AED 300</td>
+              <td>Active</td>
+              <td>
+                <button class="btn btn-outline action-btn">Edit</button>
+                <button class="btn btn-outline action-btn">Deactivate</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Premium VIP Safari</td>
+              <td>AED 450</td>
+              <td>Active</td>
+              <td>
+                <button class="btn btn-outline action-btn">Edit</button>
+                <button class="btn btn-outline action-btn">Deactivate</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top: 1rem;">
+          <button class="btn" id="addPackageBtn">Add New Package</button>
+        </div>
+      </div>
+
+      <!-- Logout -->
+      <div style="text-align: center; margin-top: 3rem;">
+        <button class="btn btn-outline" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Create Package Modal -->
+  <div class="modal" id="createPackageModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Create New Package</h2>
+        <button class="close-modal">&times;</button>
+      </div>
+      <form id="createPackageForm">
+        <div class="form-group">
+          <label for="package-title">Package Title</label>
+          <input type="text" id="package-title" required>
+        </div>
+        <div class="form-group">
+          <label for="package-description">Description</label>
+          <textarea id="package-description" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="package-price">Price (AED)</label>
+          <input type="number" id="package-price" min="0" step="0.01" required>
+        </div>
+        <div class="form-group">
+          <label>Package Image</label>
+          <div class="file-upload" id="fileUpload">
+            <div class="file-upload-icon">📁</div>
+            <div class="file-upload-text">Click to upload image<br><small>JPG, PNG, GIF up to 5MB</small></div>
+            <input type="file" id="package-image" accept="image/*">
+          </div>
+          <div class="image-preview" id="imagePreview"></div>
+        </div>
+        <div class="form-group">
+          <label for="package-inclusions">Inclusions (one per line)</label>
+          <textarea id="package-inclusions" placeholder="Hotel pickup & drop-off&#10;Dune bashing&#10;Camel ride"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" id="cancelPackageBtn">Cancel</button>
+          <button type="submit" class="btn">Create Package</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Mobile menu toggle
+    document.querySelector('.mobile-toggle').addEventListener('click', function() {
+      document.querySelector('nav ul').classList.toggle('show');
+    });
+
+    // Simple login logic (front-end only)
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById('admin-username').value;
+      const password = document.getElementById('admin-password').value;
+
+      // Dummy check (in real app, validate against backend)
+      if (username && password) {
+        document.getElementById('admin-login').style.display = 'none';
+        document.getElementById('admin-dashboard').style.display = 'block';
+      } else {
+        alert('Please enter username and password.');
+      }
+    });
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+      document.getElementById('admin-dashboard').style.display = 'none';
+      document.getElementById('admin-login').style.display = 'flex';
+      document.getElementById('loginForm').reset();
+    });
+
+    // Modal controls
+    const modal = document.getElementById('createPackageModal');
+    const openModalBtn = document.getElementById('addPackageBtn');
+    const closeModalBtn = document.querySelector('.close-modal');
+    const cancelBtn = document.getElementById('cancelPackageBtn');
+    const createForm = document.getElementById('createPackageForm');
+    const fileUpload = document.getElementById('fileUpload');
+    const fileInput = document.getElementById('package-image');
+    const imagePreview = document.getElementById('imagePreview');
+
+    function openModal() {
+      modal.classList.add('show');
+    }
+
+    function closeModal() {
+      modal.classList.remove('show');
+      createForm.reset();
+      imagePreview.innerHTML = '';
+    }
+
+    openModalBtn.addEventListener('click', openModal);
+    closeModalBtn.addEventListener('click', closeModal);
+    cancelBtn.addEventListener('click', closeModal);
+
+    // Close modal on outside click
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    // File upload handling
+    fileUpload.addEventListener('click', function() {
+      fileInput.click();
+    });
+
+    fileInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      // Basic file type validation
+      if (!file.type.startsWith('image/')) {
+        alert('Please select an image file (JPG, PNG, GIF).');
+        return;
+      }
+
+      // Basic file size validation (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('File size must be less than 5MB.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Create new package
+    createForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const title = document.getElementById('package-title').value.trim();
+      const description = document.getElementById('package-description').value.trim();
+      const price = document.getElementById('package-price').value;
+      const inclusions = document.getElementById('package-inclusions').value.trim();
+      const imageFile = fileInput.files[0];
+
+      if (!title || !description || !price) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+
+      // In a real application, you would upload the image to a server
+      // For this demo, we'll just use a placeholder or the file name
+      let imageSrc = '';
+      if (imageFile) {
+        // In a real app, this would be the uploaded image URL
+        imageSrc = `[Uploaded: ${imageFile.name}]`;
+      }
+
+      // Add row to packages table
+      const tableBody = document.querySelector('#packagesTable tbody');
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+        <td>${title}</td>
+        <td>AED ${parseFloat(price).toFixed(0)}</td>
+        <td>Active</td>
+        <td>
+          <button class="btn btn-outline action-btn">Edit</button>
+          <button class="btn btn-outline action-btn">Deactivate</button>
+        </td>
+      `;
+      tableBody.appendChild(newRow);
+
+      // Update package count
+      const packageCountEl = document.getElementById('package-count');
+      packageCountEl.textContent = parseInt(packageCountEl.textContent) + 1;
+
+      // Close modal and reset form
+      closeModal();
+
+      alert('New package created successfully!');
+    });
+  </script>
+</body>
+</html>
